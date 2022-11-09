@@ -39,34 +39,43 @@ This project is based on Node with Express JS as a framework. Since the project 
 
 **Endpoints List**
 
-- List/Get (GET): `/api/password-cards/
+## **List/Get (GET)**
 
-- Query params:
+`/api/password-cards/`
 
-- filter: string (optional)`
+Query params:
 
-- Create (POST): `/api/password-cards/
+filter: string (optional)`
 
-- Body:
 
-- name: string (required)
+## Create (POST):
 
-- url: string (required)
+ `/api/password-cards/`
 
-- username: string (required)
+Body:
 
-- password: string (required)
+    - name: string (required)
+    
+    - url: string (required)
+    
+    - username: string (required)
+    
+    - password: string (required)
 
-- Update (PUT): `/api/password-cards/:id
+## Update (PUT)
 
-- Body:
+`/api/password-cards/:id`
 
-- name: string (optional)
+Body:
 
-- url: string (optional)
+    - name: string (optional)
+    
+    - url: string (optional)
+    
+    - username: string (optional)
+    
+    - password: string (optional)
 
-- username: string (optional)
+## -Delete (DELETE):
 
-- password: string (optional)
-
-- Delete (DELETE): `/api/password-cards/:id
+`/api/password-cards/:id`
