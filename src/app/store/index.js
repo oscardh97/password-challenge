@@ -17,21 +17,24 @@ class Store {
                 this.data = JSON.parse(dataString);
             }
         } catch (err) {
-            console.error("There was an error when trying to load the database");
+            throw new Error("There was an error when trying to load the database");
         }
     }
 
     async create(row) {
         try {
-            this.data.push({
+            const newRow = {
                 ...row,
                 id: uuidv4()
-            });
+            };
+
+            this.data.push(newRow);
 
             await this.syncDb();
+
+            return newRow;
         } catch (err) {
-            console.log(err)
-            console.error("There was an error when trying to write in the database");
+            throw new Error("There was an error when trying to write in the database");
         }
     }
     
@@ -61,8 +64,7 @@ class Store {
 
             return result;
         } catch (err) {
-            console.log(err)
-            console.error("There was an error when trying to write in the database");
+            throw new Error("There was an error when trying to write in the database");
         }
     }
 
@@ -82,8 +84,7 @@ class Store {
             }
 
         } catch (err) {
-            console.log(err)
-            console.error("There was an error when trying to write in the database");
+            throw new Error("There was an error when trying to write in the database");
         }
     }
 
@@ -92,16 +93,18 @@ class Store {
             for (let i = 0; i < this.data.length; i++) {
                 if (this.data[i].id === id) {
                     this.data[i] = {
-                        ...data,
-                        ...this.data[i]
+                        ...this.data[i],
+                        ...data
                     };
                     await this.syncDb();
 
                     return this.data[i];
                 }
             }
+
+            throw new Error("Object not found");
         } catch (err) {
-            console.error("There was an error when trying to write in the database");
+            throw new Error(err.message || "There was an error when trying to write in the database");
         }
     }
 
@@ -113,8 +116,9 @@ class Store {
                     await this.syncDb();
                 }
             }
+            throw new Error("Object not found");
         } catch (err) {
-            console.error("There was an error when trying to write in the database");
+            throw new Error(err.message || "There was an error when trying to write in the database");
         }
     }
 }
