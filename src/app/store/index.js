@@ -52,7 +52,7 @@ class Store {
             for (let i = 0; i < this.data.length; i++) {
                 let match = true;
                 for (let FILTER in query) {
-                    if (query[FILTER] !== this.data[i][FILTER]) {
+                    if (this.data[i][FILTER].toUpperCase().indexOf(query[FILTER].toUpperCase()) === -1) {
                         match = false;
                     }
                 }
@@ -114,6 +114,7 @@ class Store {
                 if (this.data[i].id === id) {
                     this.data.splice(i, 1);
                     await this.syncDb();
+                    return;
                 }
             }
             throw new Error("Object not found");

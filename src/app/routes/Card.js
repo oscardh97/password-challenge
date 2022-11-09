@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import Card from '../controllers/Card.js';
 import { vaidateCreateInput, vaidateUpdateInput } from '../middleware/Card.js';
 import store from '../store/index.js';
 
@@ -7,7 +8,7 @@ const router = Router({ mergeParams: true });
 router.post("/", [vaidateCreateInput], async (req, res) => {
     try {
         const { body } = req;
-        const newCard = await store.create(body);
+        const newCard = await Card.create(body);
     
         return res.status(200).json(newCard);
     } catch (err) {
@@ -17,10 +18,12 @@ router.post("/", [vaidateCreateInput], async (req, res) => {
     }
 });
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const { query } = req;
-        const cards = store.read(query);
+        const { filter } = query || {};
+
+        const cards = await Card.read(filter ? { name: filter } : null);
     
         return res.status(200).json(cards);
 
@@ -36,7 +39,7 @@ router.put("/:id", [vaidateUpdateInput], async (req, res) => {
         const { params, body } = req;
         const { id } = params;
 
-        const card = await store.update(id, body);
+        const card = await Card.update(id, body);
 
         return res.status(200).json(card);
 
@@ -52,7 +55,7 @@ router.delete("/:id", async (req, res) => {
         const { params } = req;
         const { id } = params;
 
-        await store.delete(id);
+        await Card.delete(id);
 
         return res.status(200).json({
             message: "The card was deleted."
